@@ -48,6 +48,7 @@ from autojump_data import Entry
 from autojump_data import load
 from autojump_data import save
 from autojump_match import match_anywhere
+from autojump_match import match_anywhere_tail
 from autojump_match import match_consecutive
 from autojump_match import match_fuzzy
 from autojump_utils import first
@@ -198,6 +199,7 @@ def find_matches(entries, needles, check_entries=True):
         lambda entry: not is_cwd(entry) and path_exists(entry),
         chain(
             match_consecutive(needles, data, ignore_case),
+            match_anywhere_tail(needles, data, ignore_case),
             match_fuzzy(needles, data, ignore_case),
             match_anywhere(needles, data, ignore_case),
         ),

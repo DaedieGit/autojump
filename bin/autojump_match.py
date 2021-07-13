@@ -36,6 +36,7 @@ def match_anywhere(needles, haystack, ignore_case=False):
             (path='/foo/baz', weight=10),
         ]
     """
+
     regex_needle = '.*' + '.*'.join(imap(re.escape, needles)) + '.*'
     regex_flags = re.IGNORECASE | re.UNICODE if ignore_case else re.UNICODE
     found = lambda haystack: re.search(
@@ -83,6 +84,18 @@ def match_consecutive(needles, haystack, ignore_case=False):
     found = lambda entry: re.search(
         regex_needle,
         entry.path,
+        flags=regex_flags,
+    )
+    return ifilter(found, haystack)
+
+
+
+def match_anywhere_tail(needles, haystack, ignore_case=False):
+    regex_needle = '.*' + '.*'.join(imap(re.escape, needles))
+    regex_flags = re.IGNORECASE | re.UNICODE if ignore_case else re.UNICODE
+    found = lambda haystack: re.search(
+        regex_needle,
+        haystack.path,
         flags=regex_flags,
     )
     return ifilter(found, haystack)
